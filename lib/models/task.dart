@@ -1,19 +1,13 @@
 class Task {
-  Task(
-    this._name,
-    this._checked,
-    this._crossed,
-  );
+  final String name;
+  bool isDone;
 
-  final String _name;
-  String get name => _name;
+  Task({
+    required this.name,
+    this.isDone = false,
+  });
 
-  bool _checked;
-  bool get checked => _checked;
-
-  set checked(value) => _checked = value;
-  bool _crossed;
-
-  bool get crossed => _crossed;
-  set crossed(value) => _crossed = value;
+  void toggleDone() {
+    isDone = !isDone;
+  }
 }

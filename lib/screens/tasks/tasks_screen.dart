@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'tasks/add_task.dart';
-import '../provider/task_provider.dart';
-import 'tasks/tasks_list.dart';
+import 'add_task.dart';
+import 'tasks_list.dart';
+import '../../provider/task_provider.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class TasksScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${context.read<TaskProvider>().totalTasks} Tasks',
+                    '${context.read<TaskProvider>().taskCount} Tasks',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16.0,
@@ -66,10 +66,17 @@ class TasksScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
-          onPressed: () => showModalBottomSheet(context: context, builder: (context) => const AddTask()),
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: const AddTask(),
+              ),
+            ),
+          ),
           shape: const CircleBorder(),
           backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(

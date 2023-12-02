@@ -1,27 +1,19 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
   final _tasks = <Task>[
-    Task(
-      'Buy milk',
-      false,
-      false,
-    ),
-    Task(
-      'Buy eggs',
-      false,
-      false,
-    ),
-    Task(
-      'Buy bread',
-      false,
-      true,
-    ),
+    Task(name: 'Buy milk'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy bread'),
   ];
 
-  List<Task> get tasks => _tasks;
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
+
+  int get taskCount => _tasks.length;
 
   void clear() {
     _tasks.clear();
@@ -34,16 +26,24 @@ class TaskProvider with ChangeNotifier {
 
   void check(int index) {
     final task = _findTask(index);
-    task.checked = !task.checked;
+    task.isDone = !task.isDone;
     _tasks[index] = task;
     notifyListeners();
   }
 
-  void addTask(String name) {
-    final newTask = Task(name, false, false);
+  void addTask(String newTaskTitle) {
+    final newTask = Task(name: newTaskTitle);
     _tasks.add(newTask);
     notifyListeners();
   }
 
-  int get totalTasks => _tasks.length;
+  void updateTask(Task task) {
+    task.toggleDone();
+    notifyListeners();
+  }
+
+  void deleteTask(int index) {
+    _tasks.removeAt(index);
+    notifyListeners();
+  }
 }
